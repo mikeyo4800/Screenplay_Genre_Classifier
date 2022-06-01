@@ -2,3 +2,16 @@
 /data/screenplays_pdf
 /data/screenplays_txt
 /data/txt_and_genres.csv
+/data/testing_set.csv
+/data/testing_targets.csv
+/data/training_set.csv
+/data/training_targets.csv
+/better_data.csv
+/final_data.csv
+/genre_label.txt
+/genre_labels.csv
+/more_data.csv
+/lemmed_data.csv
+/names.txt
+/topic_data.csv
+/word_counts_by_lemma.json

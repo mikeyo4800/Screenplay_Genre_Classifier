@@ -13,6 +13,8 @@ from nltk.corpus import wordnet
 from nltk import pos_tag
 from nltk import WordNetLemmatizer
 
+from nltk.stem import PorterStemmer, LancasterStemmer
+from nltk.stem.snowball import SnowballStemmer
 
 
 
@@ -21,16 +23,11 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
     
     def __init__(self, activator_type = None, lem_or_stem = None, stop_words = None):
         
-        #define attributes to store if text preprocessing requires fitting from data
         self.activator_type = activator_type
         self.lem_or_stem = lem_or_stem
         self.stop_words = stop_words
     
     def fit(self, data, y = 0):
-        # this is where you would fit things like corpus specific stopwords
-        # fit probable bigrams with bigram model in here
-        
-        # save as parameters of Text preprocessor
         return self
     
     def transform(self, data, y = 0):
@@ -43,10 +40,13 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
             fully_normalized_corpus = data.apply(self.stem_process_doc)
             return fully_normalized_corpus
 
-    def clean_words(self, doc):
+    def the_cleaner(self, text):
+        
+        text_replace = text.replace('\\r', ' ').replace('\\n', ' ').replace('\\', '').split()
+        text_strip = [re.sub(r"\([^()]*\)", "", i) for i in text_replace]
+        perfect = " ".join([x for x in text_strip if x.isalpha() and len(x) > 1])
 
-        doc_lower = doc.lower().replace("\\n", '').replace("\\r", "")
-        return doc_lower  
+        return perfect
     
     def lem_process_doc(self, doc):
 
@@ -54,13 +54,14 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
         stop_words = stopwords.words('english')
         movie_stop_words = ['b', 'fade', 'in', 'cut', 'to', 'int', 'ext', 'v', 'o', '\b', 'out', 'transition', 'to', 'angle', 'pan', 'word', 'title', 'description', 'screenplay']
         stop_words_modified = list(itertools.chain(movie_stop_words, stop_words))
+        doc_lower = self.the_cleaner(doc).lower()
+
 
         if self.stop_words != None:
             stop_words_modified = list(itertools.chain(stop_words_modified, self.stop_words))
         
         if self.activator_type == 'wb':
             
-            doc_lower = self.clean_words(doc)
             sent = TextBlob(doc_lower)
             tag_dict = {"J": 'a', "N": 'n', "V": 'v', "R": 'r'}
             words_and_tags = [(w, tag_dict.get(pos[0], 'n')) for w, pos in sent.tags]    
@@ -70,13 +71,12 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
 
         elif self.activator_type == 'pt':
             
-            doc_lower = self.clean_words(doc)
             doc_norm = [tok for tok in word_tokenize(doc_lower) if ((tok.isalpha()) & (tok not in stop_words_modified))]
             return " ".join([lemma(tok) for tok in doc_norm])
 
-        else:
+        elif self.activator_type == 'wnl':
             wnl = WordNetLemmatizer()
-            # helper function to change nltk's part of speech tagging to a wordnet format.
+
             def pos_tagger(nltk_tag):
                 if nltk_tag.startswith('J'):
                     return wordnet.ADJ
@@ -90,13 +90,9 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
                     return None
 
 
-            doc_lower = self.clean_words(doc)
-            # remove stop words and punctuations, then lower case
             doc_norm = [tok for tok in word_tokenize(doc_lower) if ((tok.isalpha()) & (tok not in stop_words_modified)) ]
 
-            #  POS detection on the result will be important in telling Wordnet's lemmatizer how to lemmatize
 
-            # creates list of tuples with tokens and POS tags in wordnet format
             wordnet_tagged = list(map(lambda x: (x[0], pos_tagger(x[1])), pos_tag(doc_norm))) 
             doc_norm = [wnl.lemmatize(token, pos) for token, pos in wordnet_tagged if pos is not None]
 
@@ -104,7 +100,14 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
 
     def stem_process_doc(self, doc):
 
-        doc_lower = self.clean_words(doc)
+        stop_words = stopwords.words('english')
+        movie_stop_words = ['b', 'fade', 'in', 'cut', 'to', 'int', 'ext', 'v', 'o', '\b', 'out', 'transition', 'to', 'angle', 'pan', 'word', 'title', 'description', 'screenplay']
+        stop_words_modified = list(itertools.chain(movie_stop_words, stop_words))
+        doc_lower = self.the_cleaner(doc).lower()
+        
+        if self.stop_words != None:
+            stop_words_modified = list(itertools.chain(stop_words_modified, self.stop_words))
+        
         doc_norm = [tok for tok in word_tokenize(doc_lower) if ((tok.isalpha()) & (tok not in stop_words_modified))]
 
         if self.activator_type == 'ps':
@@ -119,8 +122,8 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
             stem_doc = [ls.stem(x) for x in doc_norm]
             return " ".join(stem_doc)
 
-        else:
-            sn = SnowballStemmer()
+        elif self.activator_type == 'ss':
+            sn = SnowballStemmer('english')
             stem_doc = [sn.stem(x) for x in doc_norm]
             return " ".join(stem_doc)
 
