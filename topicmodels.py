@@ -14,9 +14,20 @@ import pyLDAvis.gensim_models
 
 class Modeling(BaseEstimator, TransformerMixin):
     
-    def __init__(self, topics, chunk, passes):
+    def __init__(self, topics=3, chunk=10, passes=1):
+
+        """
         
-        #define attributes to store if text preprocessing requires fitting from data
+        This custom class creates LDA models. It takes three arguments: topics, chunk, and passes.
+
+        This custom class was not used for the final git hub although was used throughout the process.
+
+        It will be used in the future for improvements on the project where topic modeling will be added as features for
+        the classification model
+        
+        
+        """
+        
         self.topics = topics
         self.chunk = chunk
         self.passes = passes

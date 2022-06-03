@@ -15,3 +15,11 @@
 /names.txt
 /topic_data.csv
 /word_counts_by_lemma.json
+/data/cleaned_data.csv
+/data/inter.csv
+/data/X_test.csv
+/data/X_train.csv
+/data_preprocessing_2.ipynb
+/data_preprocessing_3.ipynb
+/topic_modeling.ipynb
+/__pycache__

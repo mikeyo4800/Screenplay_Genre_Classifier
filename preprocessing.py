@@ -1,3 +1,4 @@
+#importing necessary packages
 from sklearn.base import BaseEstimator, TransformerMixin
 from textblob import TextBlob
 import itertools
@@ -19,10 +20,28 @@ from nltk.stem.snowball import SnowballStemmer
 
 
 
-class TextPreprocessor(BaseEstimator, TransformerMixin):
+class TextPreprocessor(BaseEstimator, TransformerMixin): #for pipeline and column transformation (not used in this project)
     
     def __init__(self, activator_type = None, lem_or_stem = None, stop_words = None):
         
+        """
+        This class object takes three arguments: activator_type, lem_or_stem, and stop_words.
+
+        activator_type is for the type of stemming or lemming process to be applied to the text.
+            options: ps- PorterStemmer, ss- Snowball Stemmer, ls- Lancaster Stemmer- wnl - WordNetLemmatiztion, tb- TextBlob, pt - Pattern
+
+        lem_or_stem indicates whether to lemmatize or stem the text data
+
+        stop_words is if you wish to add a custom stop words list to be used in the textpreprocessing transformation
+
+        All arguments are set to None.
+
+        *Will throw up an error if activator_type indicates stemming while lem_or_stem is lemming and vice versa
+        
+        """
+
+
+
         self.activator_type = activator_type
         self.lem_or_stem = lem_or_stem
         self.stop_words = stop_words
@@ -126,5 +145,3 @@ class TextPreprocessor(BaseEstimator, TransformerMixin):
             sn = SnowballStemmer('english')
             stem_doc = [sn.stem(x) for x in doc_norm]
             return " ".join(stem_doc)
-
-
