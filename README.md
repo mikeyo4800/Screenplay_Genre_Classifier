@@ -4,9 +4,11 @@
 
 ## Introduction
 
-"While scholars dispute defintions and systems, the audience is already a genre expert. It entes each film armed with a complex set of anticipations learned through a lifetime of moviegoing." - Robert Mckee
+"While scholars dispute defintions and systems, the audience is already a genre expert. It enters each film armed with a complex set of anticipations learned through a lifetime of moviegoing." - Robert Mckee
 
-Robert Mckee was the guy in Hollywood who would read and choose screenplays to be purchased. According to him, genre is an important element in drawing in the audience. Nowadays, I hold the opinon that Hollywood is not making good movies anmore. While genre is not the only element in creating a film, it is a very important one. For example, the new release of the Doctor Strange movie was a let down to the Marvel audience. There are probably a multitude of reasons but one reason that I recognizied is the fact that they advertised it as a horor film when it completely missed the mark. 
+Robert Mckee was the guy in Hollywood who would read and choose screenplays to be purchased. According to him, genre is an important element in drawing in the audience. Nowadays, I hold the opinon that Hollywood is not making good movies anmore. 
+
+ For example, the new release of the Doctor Strange movie was a let down to the Marvel audience. There are probably a multitude of reasons but one reason that I recognizied is the fact that they advertised it as a horor film when it completely missed the mark. 
 
 ![doctor_strange_1.png](images/doctor_strange_1.png)
 ![doctor_strange_2.png](images/doctor_strange_2.png)
